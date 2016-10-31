@@ -5,7 +5,7 @@ class Ranking
     end
 
     def triple_value
-      Card::VALUES.index(three_of_a_kind_group.first)
+      three_of_a_kind_group.last.first.index
     end
 
     def beats_same_ranking?(other_ranking)
@@ -15,7 +15,7 @@ class Ranking
     private
 
     def three_of_a_kind_group
-      @three_of_a_kind_group ||= grouped_values.detect do |grouping, cards|
+      @three_of_a_kind_group ||= grouped_by_value.detect do |grouping, cards|
         cards.length == 3
       end
     end

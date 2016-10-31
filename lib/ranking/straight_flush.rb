@@ -9,8 +9,7 @@ class Ranking
     end
 
     def top_card_value
-      top_card = values.sort_by {|value| Card::VALUES.index(value) }.last
-      Card::VALUES.index(top_card)
+      cards.last.index
     end
   end
 end

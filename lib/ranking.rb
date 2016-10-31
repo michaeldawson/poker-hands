@@ -45,6 +45,10 @@ class Ranking
     @hand = hand
   end
 
+  def cards
+    @cards ||= hand.cards.sort_by(&:index)
+  end
+
   def stronger_than?(other_ranking)
     return true if self.class > other_ranking.class
     return false if self.class < other_ranking.class
@@ -60,21 +64,16 @@ class Ranking
 
   attr_reader :hand
 
-  def values
-    hand.cards.map(&:value)
-  end
-
-  def grouped_values
-    values.group_by(&:to_s)
+  def grouped_by_value
+    cards.group_by(&:value)
   end
 
   def suits
-    hand.cards.map(&:suit)
+    cards.map(&:suit)
   end
 
   def all_consecutive?
-    indexes = values.map { |value| Card::VALUES.index(value) || -1 }
-    indexes.sort.each_cons(2).all? { |x, y| y == x + 1 }
+    cards.map(&:index).each_cons(2).all? { |x, y| y == x + 1 }
   end
 
   def all_same_suit?

@@ -5,11 +5,11 @@ class Ranking
     end
 
     def top_pair_value
-      Card::VALUES.index(pairs.last)
+      pairs.last.index
     end
 
     def second_pair_value
-      Card::VALUES.index(pairs.first)
+      pairs.first.index
     end
 
     def beats_same_ranking?(other_ranking)
@@ -25,7 +25,7 @@ class Ranking
     private
 
     def pairs
-      grouped_values.select { |grouping, cards| cards.length == 2 }.keys.sort_by { |card_value| Card::VALUES.index(card_value) }
+      @pairs ||= grouped_by_value.select { |grouping, cards| cards.length == 2 }.map{ |grouping, cards| cards.first }.sort_by(&:index)
     end
   end
 end

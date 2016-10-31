@@ -7,7 +7,7 @@ class Ranking
     end
 
     def top_card_value
-      Card::VALUES.index(four_of_a_kind_group.first)
+      four_of_a_kind_group.last.first.index
     end
 
     def beats_same_ranking?(other_ranking)
@@ -17,7 +17,7 @@ class Ranking
     private
 
     def four_of_a_kind_group
-      @four_of_a_kind_group ||= grouped_values.detect do |grouping, cards|
+      @four_of_a_kind_group ||= grouped_by_value.detect do |grouping, cards|
         cards.length == 4
       end
     end

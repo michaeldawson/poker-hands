@@ -1,7 +1,7 @@
 class Ranking
   class FullHouse < Ranking
     def valid?
-      grouped_values.values.map(&:length).sort == [2, 3]
+      three_of_a_kind_group && pair_group
     end
 
     def beats_same_ranking?(other_ranking)
@@ -15,23 +15,23 @@ class Ranking
     end
 
     def top_card_value
-      Card::VALUES.index(three_of_a_kind_group.first)
+      three_of_a_kind_group.last.first.index
     end
 
     def pair_value
-      Card::VALUES.index(pair_group.first)
+      pair_group.last.first.index
     end
 
     private
 
     def three_of_a_kind_group
-      @three_of_a_kind_group ||= grouped_values.detect do |grouping, cards|
+      @three_of_a_kind_group ||= grouped_by_value.detect do |grouping, cards|
         cards.length == 3
       end
     end
 
     def pair_group
-      @pair_group ||= grouped_values.detect do |grouping, cards|
+      @pair_group ||= grouped_by_value.detect do |grouping, cards|
         cards.length == 2
       end
     end

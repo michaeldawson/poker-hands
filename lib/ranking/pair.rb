@@ -1,17 +1,15 @@
 class Ranking
   class Pair < Ranking
     def valid?
-      grouped_values.select { |grouping, cards| cards.length == 2 }.any?
+      !! pair_group
     end
 
     def pair_value
-      pair_card = pair_group.first
-      Card::VALUES.index(pair_card)
+      pair_group.last.first.index
     end
 
     def top_kicker_value
-      top_kicker_card = kickers.sort_by { |value| Card::VALUES.index(value) }.last
-      Card::VALUES.index(top_kicker_card)
+      kickers.last.index
     end
 
     def beats_same_ranking?(other_ranking)
@@ -26,13 +24,13 @@ class Ranking
     private
 
     def pair_group
-      @pair_group ||= grouped_values.detect do |grouping, cards|
-        cards.length == 2
+      @pair_group ||= grouped_by_value.detect do |value, group|
+        group.length == 2
       end
     end
 
     def kickers
-      @kickers ||= grouped_values.select { |grouping, cards| cards.one? }.keys
+      @kickers ||= cards.reject { |card| card.value == pair_group.first }
     end
   end
 end
