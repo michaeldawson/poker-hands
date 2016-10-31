@@ -73,7 +73,15 @@ class Ranking
   end
 
   def all_consecutive?
-    cards.map(&:index).each_cons(2).all? { |x, y| y == x + 1 }
+    indexes = cards.map(&:index)
+    return true if indexes.each_cons(2).all? { |x, y| y == x + 1 }
+
+    if indexes.last == 13 # We can allow an Ace to act as a one!
+      indexes_with_low_ace = indexes.take(indexes.length - 1).unshift(0)
+      indexes_with_low_ace.each_cons(2).all? { |x, y| y == x + 1 }
+    else
+      false
+    end
   end
 
   def all_same_suit?

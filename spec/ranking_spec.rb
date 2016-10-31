@@ -34,6 +34,10 @@ RSpec.describe Ranking do
       expect(Ranking.strongest_for(Hand.new(%w{KS QH JH TH 9H}))).to be_a Ranking::Straight
     end
 
+    it 'returns an ace-low straight correctly' do
+      expect(Ranking.strongest_for(Hand.new(%w{5S 4H 3H 2H AH}))).to be_a Ranking::Straight
+    end
+
     it 'returns three of a kind correctly' do
       expect(Ranking.strongest_for(Hand.new(%w{KS KH KD TH 9H}))).to be_a Ranking::ThreeOfAKind
     end
